@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizLightUniversal.Core", "WizLightUniversal.Core\WizLightUniversal.Core.csproj", "{2CFBACC8-CA72-4AA1-9A86-90858F724498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizLightUniversal.Windows", "WizLightUniversal.Windows\WizLightUniversal.Windows.csproj", "{981524CB-8359-4D16-9845-A6AFE6A9E6EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2CFBACC8-CA72-4AA1-9A86-90858F724498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CFBACC8-CA72-4AA1-9A86-90858F724498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CFBACC8-CA72-4AA1-9A86-90858F724498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CFBACC8-CA72-4AA1-9A86-90858F724498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981524CB-8359-4D16-9845-A6AFE6A9E6EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981524CB-8359-4D16-9845-A6AFE6A9E6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981524CB-8359-4D16-9845-A6AFE6A9E6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981524CB-8359-4D16-9845-A6AFE6A9E6EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66BB3BA9-6BD8-49FD-9A85-6C2489CB9BDB}
+	EndGlobalSection
+EndGlobal
