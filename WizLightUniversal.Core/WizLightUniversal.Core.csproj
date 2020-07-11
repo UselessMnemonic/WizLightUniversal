@@ -16,4 +16,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ModelViews\" />
+  </ItemGroup>
+
 </Project>

@@ -7,7 +7,7 @@ namespace WizLightUniversal.Core
     {
         public App()
         {
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new Views.MainPage();
         }
 
         protected override void OnStart()

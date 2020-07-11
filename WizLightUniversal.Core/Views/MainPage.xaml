@@ -4,12 +4,11 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Title="Main Page"
-             x:Class="WizLightUniversal.Core.MainPage">
+             NavigationPage.HasNavigationBar="False"
+             x:Class="WizLightUniversal.Core.Views.MainPage">
     <ContentPage.Content>
-        <StackLayout Margin="20">
-            <Label Text="Welcome to Xamarin.Forms!" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
-            <Button Clicked="GotoCalculatorClicked" Text="Goto calculator" VerticalOptions="End" HorizontalOptions="Fill" />
-        </StackLayout>
+        <ListView>
+            
+        </ListView>
     </ContentPage.Content>
 </ContentPage>

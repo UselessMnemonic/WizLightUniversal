@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace WizLightUniversal.Core
+namespace WizLightUniversal.Core.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPage : ContentPage
@@ -15,11 +15,6 @@ namespace WizLightUniversal.Core
         public MainPage()
         {
             InitializeComponent();
-        }
-
-        private async void GotoCalculatorClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new CalculatorPage());
         }
     }
 }
