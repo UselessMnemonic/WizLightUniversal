@@ -4,11 +4,17 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#FFFFFF"
              x:Class="WizLightUniversal.Core.Views.MainPage">
     <ContentPage.Content>
         <ListView>
-            
+
         </ListView>
     </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Quit" Clicked="Quit_Clicked"
+                     Order="Secondary" Priority="0"/>
+        <ToolbarItem Text="Preferences" Clicked="Preferences_Clicked" IconImageSource="Resources/gear.png"
+                     Order="Primary" Priority="1"/>
+    </ContentPage.ToolbarItems>
 </ContentPage>

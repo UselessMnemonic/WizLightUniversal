@@ -14,6 +14,7 @@ namespace WizLightUniversal.Windows
     {
         private NotifyIcon trayIcon;
         private System.Drawing.Point lastMousePositionInIcon;
+        private volatile bool IsQuitting;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -38,12 +39,14 @@ namespace WizLightUniversal.Windows
                 ResizeMode = ResizeMode.NoResize,
                 WindowStyle = WindowStyle.None
             };
-            ((FormsApplicationPage)MainWindow).LoadApplication(new Core.App());
+            ((FormsApplicationPage)MainWindow).LoadApplication(new Core.App(this.Applicaton_Quit, new WinPreferencesProvider()));
             MainWindow.Deactivated += MainWindow_Deactivated;
 
             // enable tray icon
             Application.Current.SendStart();
             trayIcon.Visible = true;
+            trayIcon.ShowBalloonTip(5000, "WizUniversal", "Click on the icon to open the main panel.", ToolTipIcon.None);
+            IsQuitting = false;
         }
 
         // Store the current position of the mouse on the icon to check if the mouse clicked inside the icon
@@ -80,8 +83,10 @@ namespace WizLightUniversal.Windows
         /// </summary>
         private void ToggleWindow()
         {
+            if (IsQuitting) return;
+
             // Hide the window when it is visible
-            if (MainWindow.IsVisible)
+            else if (MainWindow.IsVisible)
             {
                 MainWindow.Hide();
                 Application.Current.SendSleep();
@@ -151,6 +156,17 @@ namespace WizLightUniversal.Windows
                     return QuadrantCorner.TOP_LEFT;
                 }
             }
+        }
+
+        // Performed when the application must quit
+        private void Applicaton_Quit()
+        {
+            IsQuitting = true;
+            trayIcon.Visible = false;
+            trayIcon.Dispose();
+            trayIcon = null;
+            Application.Current.Quit();
+            System.Windows.Forms.Application.Exit();
         }
     }
 }

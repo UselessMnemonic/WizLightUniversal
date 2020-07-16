@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Title="Preferences"
+             NavigationPage.HasNavigationBar="True"
+             x:Class="WizLightUniversal.Core.Views.PreferencesPage">
+    <ContentPage.Content>
+        <StackLayout Margin="20">
+            <Entry x:Name="HomeIDEntry" FontSize="Title" Placeholder="######" MaxLength="6" PlaceholderColor="Gray" IsSpellCheckEnabled="False" Keyboard="Numeric" />
+            <Label FontSize="Caption" TextColor="Black">Enter your Home ID to access your lights.</Label>
+            <Button VerticalOptions="End" Text="Save" Clicked="Save_Clicked" Scale="1" Margin="20"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

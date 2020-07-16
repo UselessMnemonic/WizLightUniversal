@@ -1,13 +1,15 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace WizLightUniversal.Core
 {
     public class App : Application
     {
-        public App()
+
+        public App(Action quitAction, IPreferencesProvider preferencesProvider)
         {
-            MainPage = new Views.MainPage();
+            MainPage = new NavigationPage(new Views.MainPage(quitAction, preferencesProvider));
         }
 
         protected override void OnStart()
