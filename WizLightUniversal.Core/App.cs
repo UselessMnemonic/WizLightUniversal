@@ -7,9 +7,9 @@ namespace WizLightUniversal.Core
     public class App : Application
     {
 
-        public App(Action quitAction, IPreferencesProvider preferencesProvider)
+        public App()
         {
-            MainPage = new NavigationPage(new Views.MainPage(quitAction, preferencesProvider));
+            MainPage = new Views.MainNavigationPage();
         }
 
         protected override void OnStart()

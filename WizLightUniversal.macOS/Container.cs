@@ -3,30 +3,18 @@
 using System;
 using AppKit;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.MacOS;
 
 namespace WizLightUniversal.macOS
 {
 	public partial class Container : NSViewController
 	{
-		private NSViewController innerViewController;
+		private NSViewController contentViewController;
+		private Core.Views.MainNavigationPage mainNavigationPage = Application.Current.MainPage as Core.Views.MainNavigationPage;
 
-		public Container(IntPtr handle) : base(handle)
-		{
-		}
+		public Container(IntPtr handle) : base(handle) { }
 
-		public void SetContent(NSViewController contentController)
-        {
-			innerViewController = contentController;
-		}
-
-		public override void ViewDidLoad()
-        {
-			base.ViewDidLoad();
-			AddChildViewController(innerViewController);
-			Content.AddSubview(innerViewController.View);
-			innerViewController.View.Frame = Content.Frame;
-		}
-
+		// Generate a controller
 		public static Container FreshController()
 		{
 			var storyboard = NSStoryboard.FromName("Main", null);
@@ -34,7 +22,55 @@ namespace WizLightUniversal.macOS
 			Container controller = (Container)
 				storyboard.InstantiateControllerWithIdentifier("Container");
 
+			controller.contentViewController = Application.Current.MainPage.CreateViewController();
+
 			return controller;
+		}
+
+        public override void ViewDidLoad()
+        {
+			base.ViewDidLoad();
+			AddChildViewController(contentViewController);
+			Content.AddSubview(contentViewController.View);
+			contentViewController.View.Frame = Content.Frame;
+
+			if (mainNavigationPage != null)
+            {
+				mainNavigationPage.Pushed += (object sender, NavigationEventArgs e) => SetNavigationBarState();
+				mainNavigationPage.Popped += (object sender, NavigationEventArgs e) => SetNavigationBarState();
+				SetNavigationBarState();
+			}
+		}
+
+		public override void ViewDidLayout()
+		{
+			base.ViewDidLayout();
+			contentViewController.View.Frame = Content.Frame;
+		}
+
+		// Update navigation bar
+		private void SetNavigationBarState()
+		{ 
+			Page currentPage = mainNavigationPage.CurrentPage;
+			TitleLabel.StringValue = currentPage.Title;
+			bool isPoppedToRootPage = (currentPage == mainNavigationPage.RootPage);
+			BackButton.Hidden = isPoppedToRootPage;
+			PreferencesButton.Hidden = RefreshButton.Hidden = !BackButton.Hidden;
+        }
+
+		partial void Back_Clicked(NSButton sender)
+        {
+			((Core.Views.MainNavigationPage)Application.Current.MainPage).PopAsync();
+        }
+
+		partial void Preferences_Clicked(NSButton sender)
+        {
+			((Core.Views.MainNavigationPage)Application.Current.MainPage).PushAsync(new Core.Views.PreferencesPage());
+        }
+
+		partial void Refresh_Clicked(NSButton sender)
+        {
+			((Core.Views.MainNavigationPage)Application.Current.MainPage).HomePage.Refresh();
 		}
 	}
 }

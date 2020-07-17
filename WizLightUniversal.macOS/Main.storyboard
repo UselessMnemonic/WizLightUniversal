@@ -55,7 +55,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </containerView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zzZ-Zs-D8Y">
-                                <rect key="frame" x="-2" y="511" width="404" height="20"/>
+                                <rect key="frame" x="93" y="511" width="215" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" alignment="center" title="WizLightUniversal" usesSingleLineMode="YES" id="F2g-34-MyF">
                                     <font key="font" metaFont="systemBold" size="15"/>
@@ -63,10 +63,47 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rPX-89-GHx">
+                                <rect key="frame" x="20" y="509" width="23" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSLeftFacingTriangleTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="fa1-hQ-luS">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="Back_Clicked:" target="33b-oB-UoY" id="yTJ-Lm-N2G"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FRV-6O-peZ">
+                                <rect key="frame" x="320" y="509" width="23" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSActionTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="YrK-nW-PDA">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="Preferences_Clicked:" target="33b-oB-UoY" id="TGk-Ze-4BQ"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SHX-kw-Aok">
+                                <rect key="frame" x="357" y="509" width="23" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="NSRefreshFreestandingTemplate" imagePosition="only" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="dLb-Qc-sHA">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="Refresh_Clicked:" target="33b-oB-UoY" id="qy3-dW-iuB"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
-                        <outlet property="Content" destination="MBK-4c-VsA" id="vNc-hg-FFU"/>
+                        <outlet property="BackButton" destination="rPX-89-GHx" id="yZa-XK-Ix9"/>
+                        <outlet property="Content" destination="MBK-4c-VsA" id="oNX-jr-h4D"/>
+                        <outlet property="PreferencesButton" destination="FRV-6O-peZ" id="Lr5-al-tG7"/>
+                        <outlet property="RefreshButton" destination="SHX-kw-Aok" id="z3r-ao-A0I"/>
+                        <outlet property="TitleLabel" destination="zzZ-Zs-D8Y" id="9vd-9T-G2Y"/>
                     </connections>
                 </viewController>
                 <customObject id="iDR-yE-54A" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -74,4 +111,9 @@
             <point key="canvasLocation" x="229" y="56"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSLeftFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSRefreshFreestandingTemplate" width="14" height="14"/>
+    </resources>
 </document>

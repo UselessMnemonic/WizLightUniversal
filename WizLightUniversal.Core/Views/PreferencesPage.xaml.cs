@@ -12,29 +12,44 @@ namespace WizLightUniversal.Core.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PreferencesPage : ContentPage
     {
-        private IPreferencesProvider provider;
-
-        public PreferencesPage(IPreferencesProvider provider)
+        // Loads the pref page 
+        public PreferencesPage()
         {
             InitializeComponent();
-            this.provider = provider;
-            if (provider.HomeID > 0)
+            SaveButton.IsEnabled = false;
+            if (PreferencesProvider.Default.HomeID > 0)
             {
-                HomeIDEntry.Text = provider.HomeID.ToString();
+                HomeIDEntry.Text = PreferencesProvider.Default.HomeID.ToString();
             }
         }
 
-        private async void Save_Clicked(object sender, EventArgs e)
+        // Saves the preferences when clicked
+        void SaveButton_Clicked(object sender, EventArgs e)
         {
-            int homeId = 0;
-            string text = HomeIDEntry.Text;
-
-            if (text.Length == 6 && int.TryParse(text, out homeId))
+            int homeId = VerifyHomeID();
+            if (homeId > 0)
             {
-                provider.HomeID = homeId;
+                PreferencesProvider.Default.HomeID = homeId;
             }
+        }
 
-            await Navigation.PopModalAsync();
+        // validate text continuously 
+        private void HomeIDEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SaveButton.IsEnabled = (VerifyHomeID() > 0);
+        }
+
+        private int VerifyHomeID()
+        {
+            string text = HomeIDEntry.Text;
+            if (text.Length == 6 && int.TryParse(text, out int homeId))
+            {
+                return homeId;
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

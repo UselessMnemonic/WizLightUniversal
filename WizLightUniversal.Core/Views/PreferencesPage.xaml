@@ -9,9 +9,9 @@
              x:Class="WizLightUniversal.Core.Views.PreferencesPage">
     <ContentPage.Content>
         <StackLayout Margin="20">
-            <Entry x:Name="HomeIDEntry" FontSize="Title" Placeholder="######" MaxLength="6" PlaceholderColor="Gray" IsSpellCheckEnabled="False" Keyboard="Numeric" />
-            <Label FontSize="Caption" TextColor="Black">Enter your Home ID to access your lights.</Label>
-            <Button VerticalOptions="End" Text="Save" Clicked="Save_Clicked" Scale="1" Margin="20"/>
+            <Entry x:Name="HomeIDEntry" FontSize="Title" Placeholder="######" MaxLength="6" PlaceholderColor="Gray" IsSpellCheckEnabled="False" TextChanged="HomeIDEntry_TextChanged"/>
+            <Label FontSize="Caption" TextColor="Black">Enter your Home ID to access your lights. IDs are 6 digits long.</Label>
+            <Button x:Name="SaveButton" VerticalOptions="End" Text="Save" Clicked="SaveButton_Clicked" Scale="1" Margin="20"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

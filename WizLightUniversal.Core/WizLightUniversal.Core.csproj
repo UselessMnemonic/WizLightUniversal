@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.1080" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,5 +19,4 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
-
 </Project>

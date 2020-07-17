@@ -10,6 +10,7 @@ namespace WizLightUniversal.macOS
     public class AppDelegate : NSApplicationDelegate
     {
         private NSStatusItem statusItem;
+        private NSMenu statusMenu;
         private NSPopover popover;
 
         public AppDelegate()
@@ -17,29 +18,25 @@ namespace WizLightUniversal.macOS
             // Init Xamarin.Forms
             Forms.Init();
 
-            // Create the tray item w/ icon and handler
+            // Create the tray item w/ icon and menu
             statusItem = NSStatusBar.SystemStatusBar.CreateStatusItem(NSStatusItemLength.Square);
             statusItem.Button.Image = NSImage.ImageNamed("TrayIcon_18_18.ico");
 
-            // The core app will run under this app delegate
+            statusMenu = new NSMenu();
+            NSMenuItem quitMenuItem = new NSMenuItem("Quit");
+            quitMenuItem.Activated += (object sender, EventArgs e) => { NSApplication.SharedApplication.Terminate(this); };
+            statusMenu.AddItem(quitMenuItem);
+
+            // The core app will run under this app delegate, using the Mac preferences provider
+            Core.PreferencesProvider.Default = new MacPreferencesProvider();
             popover = new NSPopover();
             Application.SetCurrentApplication(new Core.App());
-        }
-
-        private void StatusItemClick(object sender, EventArgs e)
-        {
-            // When the tray item is clicked on, we want it to toggle the popover
-            if (!popover.Shown)
-            {
-                popover.Show(statusItem.Button.Bounds, statusItem.Button, NSRectEdge.MaxYEdge);
-            }
         }
 
         public override void DidFinishLaunching(NSNotification notification)
         {
             // Create container for popover
             Container container = Container.FreshController();
-            container.SetContent(Application.Current.MainPage.CreateViewController());
 
             // Furnish popover with content
             popover.ContentViewController = container;
@@ -49,28 +46,74 @@ namespace WizLightUniversal.macOS
             popover.SetAppearance(NSAppearance.GetAppearance(NSAppearance.NameLightContent));
 
             // Enable the tray item only after the app has launched
-            statusItem.Button.Activated += StatusItemClick;
+            statusItem.Button.Activated += StatusItem_Click;
+            statusItem.Button.SendActionOn(NSEventType.OtherMouseUp);
+            statusItem.Visible = true;
             Application.Current.SendStart();
         }
 
         public override void WillTerminate(NSNotification notification)
         {
-            // Insert code here to tear down your application
+            // Teardown resources
+            statusItem.Visible = false;
             statusItem.Dispose();
+
+            statusMenu.Dispose();
+
+            if (popover.Shown) popover.Close();
             popover.Dispose();
+
+            Application.Current.Quit();
+        }
+
+        private void StatusItem_Click(object sender, EventArgs e)
+        {
+            switch (NSApplication.SharedApplication.CurrentEvent.Type)
+            {
+                // When the tray item is clicked on, we want it to toggle the popover
+                case NSEventType.LeftMouseDown:
+
+                    if (!popover.Shown)
+                    {
+                        popover.Show(statusItem.Button.Bounds, statusItem.Button, NSRectEdge.MaxYEdge);
+                    }
+                    else
+                    {
+                        popover.Close();
+                    }
+                    break;
+
+                // Show the menu
+                case NSEventType.RightMouseDown:
+                    statusItem.PopUpStatusItemMenu(statusMenu);
+                    break;
+            }
         }
     }
 
     public class PopoverDelegate : NSPopoverDelegate
     {
+        private readonly object appLock;
+
+        public PopoverDelegate()
+        {
+            appLock = new object();
+        }
+
         public override void DidClose(NSNotification notification)
         {
-            Application.Current.SendSleep();
+            lock (appLock)
+            {
+                Application.Current.SendSleep();
+            }
         }
 
         public override void DidShow(NSNotification notification)
         {
-            Application.Current.SendResume();
+            lock (appLock)
+            {
+                Application.Current.SendResume();
+            }
         }
     }
 }

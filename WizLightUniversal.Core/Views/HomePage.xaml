@@ -5,16 +5,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              BackgroundColor="#FFFFFF"
-             x:Class="WizLightUniversal.Core.Views.MainPage">
+             Title="WizLightUniversal"
+             x:Class="WizLightUniversal.Core.Views.HomePage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="PreferencesButton" Text="Preferences" Clicked="PreferencesButton_Clicked"
+                     Order="Primary" Priority="1"/>
+        <ToolbarItem x:Name="RefreshButton" Text="Refresh" Clicked="RefreshButton_Clicked"
+                     Order="Primary" Priority="0"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView>
 
         </ListView>
     </ContentPage.Content>
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Quit" Clicked="Quit_Clicked"
-                     Order="Secondary" Priority="0"/>
-        <ToolbarItem Text="Preferences" Clicked="Preferences_Clicked" IconImageSource="Resources/gear.png"
-                     Order="Primary" Priority="1"/>
-    </ContentPage.ToolbarItems>
 </ContentPage>

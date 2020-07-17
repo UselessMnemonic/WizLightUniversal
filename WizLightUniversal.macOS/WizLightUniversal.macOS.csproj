@@ -93,6 +93,7 @@
     <Compile Include="Container.designer.cs">
       <DependentUpon>Container.cs</DependentUpon>
     </Compile>
+    <Compile Include="MacPreferencesProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TrayIcon_18_18.ico" />
