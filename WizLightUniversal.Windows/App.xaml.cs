@@ -28,24 +28,27 @@ namespace WizLightUniversal.Windows
             trayIcon.MouseMove += NotifyIconOnMouseMove;
             trayIcon.Icon = WizLightUniversal.Windows.Properties.Resources.TrayIcon_32_32;
 
+            // create context menu
+            trayIcon.ContextMenuStrip = new ContextMenuStrip();
+            trayIcon.ContextMenuStrip.Items.Add("Quit").Click += (s, eArg) => Applicaton_Quit();
+
             // create window
             MainWindow = new FormsApplicationPage
             {
                 Title = "WizLightUniversal",
-                Height = 540,
-                Width = 400,
+                Height = 400,
+                Width = 540,
                 Topmost = true,
                 ShowInTaskbar = false,
                 ResizeMode = ResizeMode.NoResize,
                 WindowStyle = WindowStyle.None
             };
-            ((FormsApplicationPage)MainWindow).LoadApplication(new Core.App(this.Applicaton_Quit, new WinPreferencesProvider()));
+            ((FormsApplicationPage)MainWindow).LoadApplication(new Core.App());
             MainWindow.Deactivated += MainWindow_Deactivated;
 
-            // enable tray icon
-            Application.Current.SendStart();
+            // enable tray icon and start app
+            Core.PreferencesProvider.Default = new WinPreferencesProvider();
             trayIcon.Visible = true;
-            trayIcon.ShowBalloonTip(5000, "WizUniversal", "Click on the icon to open the main panel.", ToolTipIcon.None);
             IsQuitting = false;
         }
 
@@ -59,7 +62,10 @@ namespace WizLightUniversal.Windows
         // Toggle the window on a left click on the icon
         private void NotifyIconOnMouseUp(object sender, MouseEventArgs e)
         {
-            ToggleWindow();
+            if (e.Button == MouseButtons.Left)
+            {
+                ToggleWindow();
+            }
         }
 
         /// <summary>

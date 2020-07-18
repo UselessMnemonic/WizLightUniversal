@@ -6,7 +6,6 @@ namespace WizLightUniversal.Core
 {
     public class App : Application
     {
-
         public App()
         {
             MainPage = new Views.MainNavigationPage();

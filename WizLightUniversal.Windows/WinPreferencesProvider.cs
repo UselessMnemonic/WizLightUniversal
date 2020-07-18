@@ -6,14 +6,9 @@ using WizLightUniversal.Core;
 
 namespace WizLightUniversal.Windows
 {
-    public class WinPreferencesProvider : IPreferencesProvider
+    public class WinPreferencesProvider : PreferencesProvider
     {
-
-        public WinPreferencesProvider()
-        {
-        }
-
-        public int HomeID
+        public override int HomeID
         {
             get { return Properties.Settings.Default.HomeID; }
             set { Properties.Settings.Default.HomeID = value; Properties.Settings.Default.Save(); }

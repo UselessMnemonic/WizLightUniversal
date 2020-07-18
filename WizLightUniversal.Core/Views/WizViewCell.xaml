@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="WizLightUniversal.Core.Views.WizViewCell">
+    <ViewCell.View>
+        <Grid
+            Padding="5"
+            ColumnSpacing="5"
+            RowSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout Grid.Column="1" VerticalOptions="Center">
+                <Label Text="{Binding IP}" FontSize="Medium"/>
+                <Label Text="{Binding MAC}"/>
+                <Switch IsToggled="{Binding Power}"/>
+            </StackLayout>
+            <StackLayout Grid.Column="2" VerticalOptions="Center">
+                <Slider Value="{Binding Red}" Minimum="0" Maximum="255" BackgroundColor="Red"/>
+                <Slider Value="{Binding Green}" Minimum="0" Maximum="255" BackgroundColor="Green"/>
+                <Slider Value="{Binding Blue}" Minimum="0" Maximum="255" BackgroundColor="Blue"/>
+            </StackLayout>
+            <StackLayout Grid.Column="3" VerticalOptions="Center">
+                <Slider Value="{Binding WarmWhite}" Minimum="0" Maximum="255" BackgroundColor="#FFF9ED"/>
+                <Slider Value="{Binding CoolWhite}" Minimum="0" Maximum="255" BackgroundColor="#EDFFFE"/>
+            </StackLayout>
+        </Grid>
+    </ViewCell.View>
+</ViewCell>
