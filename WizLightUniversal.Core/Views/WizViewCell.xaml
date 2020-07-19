@@ -16,17 +16,10 @@
             </Grid.ColumnDefinitions>
             <StackLayout Grid.Column="1" VerticalOptions="Center">
                 <Label Text="{Binding IP}" FontSize="Medium"/>
-                <Label Text="{Binding MAC}"/>
-                <Switch IsToggled="{Binding Power}"/>
+                <Label Text="{Binding MAC}" FontSize="Small"/>
             </StackLayout>
             <StackLayout Grid.Column="2" VerticalOptions="Center">
-                <Slider Value="{Binding Red}" Minimum="0" Maximum="255" BackgroundColor="Red"/>
-                <Slider Value="{Binding Green}" Minimum="0" Maximum="255" BackgroundColor="Green"/>
-                <Slider Value="{Binding Blue}" Minimum="0" Maximum="255" BackgroundColor="Blue"/>
-            </StackLayout>
-            <StackLayout Grid.Column="3" VerticalOptions="Center">
-                <Slider Value="{Binding WarmWhite}" Minimum="0" Maximum="255" BackgroundColor="#FFF9ED"/>
-                <Slider Value="{Binding CoolWhite}" Minimum="0" Maximum="255" BackgroundColor="#EDFFFE"/>
+                <Switch IsToggled="{Binding Power}"/>
             </StackLayout>
         </Grid>
     </ViewCell.View>

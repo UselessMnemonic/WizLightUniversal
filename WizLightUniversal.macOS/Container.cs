@@ -27,6 +27,7 @@ namespace WizLightUniversal.macOS
 			return controller;
 		}
 
+		// This will attatch the inner content to this container
         public override void ViewDidLoad()
         {
 			base.ViewDidLoad();
