@@ -14,11 +14,11 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackLayout Grid.Column="1" VerticalOptions="Center">
-                <Label Text="{Binding IP}" FontSize="Medium"/>
-                <Label Text="{Binding MAC}" FontSize="Small"/>
+            <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
+                <Label Text="{Binding IP}" FontSize="Small"/>
+                <Label Text="{Binding MAC}" FontSize="Micro"/>
             </StackLayout>
-            <StackLayout Grid.Column="2" VerticalOptions="Center">
+            <StackLayout Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End">
                 <Switch IsToggled="{Binding Power}"/>
             </StackLayout>
         </Grid>

@@ -36,8 +36,8 @@ namespace WizLightUniversal.Windows
             MainWindow = new FormsApplicationPage
             {
                 Title = "WizLightUniversal",
-                Height = 400,
-                Width = 540,
+                Height = 540,
+                Width = 400,
                 Topmost = true,
                 ShowInTaskbar = false,
                 ResizeMode = ResizeMode.NoResize,
