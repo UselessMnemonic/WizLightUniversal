@@ -17,16 +17,15 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Image Grid.Row="0" Grid.Column="0" VerticalOptions="Start" 
-                Source="Bulb.png" Aspect="AspectFit" HeightRequest="70" HorizontalOptions="Center"/>
+            <Image Grid.Row="0" Grid.Column="0" Source="Bulb.png" VerticalOptions="Start" Aspect="AspectFit" HeightRequest="70" HorizontalOptions="Center"/>
 
             <StackLayout Grid.Row="0" Grid.Column="1">
                 <Label FontSize="Title" Text="{Binding IP}" x:Name="IPLabel"/>
-                <Label FontSize="Small" Text="{Binding MAC}" x:Name="MACLabel" TextColor="Gray"/>
+                <Label FontSize="Micro" Text="{Binding MAC}" x:Name="MACLabel" TextColor="Gray"/>
             </StackLayout>
 
             <Image Grid.Row="1" Grid.Column="0" Source="RGB.png" HeightRequest="50"/>
-            <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1">
+            <Grid Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
                 <Label BindingContext="{x:Reference RedSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="0" Grid.Column="5" HorizontalOptions="Start"/>
                 <Slider x:Name="RedSlider" Maximum="255" Minimum="0" Value="{Binding Red}"
                         ThumbColor="Red" MinimumTrackColor="Red" MaximumTrackColor="#FFEEEE" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>

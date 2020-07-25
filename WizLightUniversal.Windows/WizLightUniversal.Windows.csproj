@@ -165,9 +165,6 @@
     <None Include="Resources\TrayIcon_32_32.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TrayIcon_18_18.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WizLightUniversal.Core\WizLightUniversal.Core.csproj">
       <Project>{2cfbacc8-ca72-4aa1-9a86-90858f724498}</Project>
       <Name>WizLightUniversal.Core</Name>
@@ -186,14 +183,28 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Gear.png">
+    <Resource Include="Resources\Gear.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Refresh.png">
+    <Resource Include="Resources\Refresh.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Brightness.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Bulb.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\RGB.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Thermometer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

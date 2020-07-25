@@ -11,8 +11,8 @@
     Title="Home"
     BackgroundColor="#FFFFFF">
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="PreferencesButton" Text="Preferences" Clicked="PreferencesButton_Clicked" Order="Primary" Priority="1"/>
-        <ToolbarItem x:Name="RefreshButton" Text="Refresh" Clicked="RefreshButton_Clicked" Order="Primary" Priority="0"/>
+        <ToolbarItem x:Name="PreferencesButton" Text="Preferences" IconImageSource="{OnPlatform WPF=Resources/Gear.png}" Clicked="PreferencesButton_Clicked" Order="Primary" Priority="1"/>
+        <ToolbarItem x:Name="RefreshButton" Text="Refresh" IconImageSource="{OnPlatform WPF=Resources/Refresh.png}" Clicked="RefreshButton_Clicked" Order="Primary" Priority="0"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ListView

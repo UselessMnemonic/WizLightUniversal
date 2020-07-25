@@ -63,16 +63,6 @@ namespace WizLightUniversal.Windows.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon TrayIcon_18_18 {
-            get {
-                object obj = ResourceManager.GetObject("TrayIcon_18_18", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
         internal static System.Drawing.Icon TrayIcon_32_32 {
             get {
                 object obj = ResourceManager.GetObject("TrayIcon_32_32", resourceCulture);

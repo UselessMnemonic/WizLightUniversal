@@ -18,7 +18,7 @@
                 <Label Text="{Binding MAC}" FontSize="Micro"/>
             </StackLayout>
             
-            <views:ToggleButton IsToggled="{Binding Power}" HeightRequest="25" WidthRequest="50"
+            <views:ToggleButton IsToggled="{Binding Power}"
                                FontSize="Default" FontFamily="Helvetica" Grid.Column="2">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup Name="ToggleStates">
