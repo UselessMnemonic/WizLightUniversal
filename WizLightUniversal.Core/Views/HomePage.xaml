@@ -14,11 +14,13 @@
         <ToolbarItem x:Name="PreferencesButton" Text="Preferences" Clicked="PreferencesButton_Clicked" Order="Primary" Priority="1"/>
         <ToolbarItem x:Name="RefreshButton" Text="Refresh" Clicked="RefreshButton_Clicked" Order="Primary" Priority="0"/>
     </ContentPage.ToolbarItems>
-
     <ContentPage.Content>
         <ListView
             x:Name="listView"
-            IsGroupingEnabled="False">
+            IsGroupingEnabled="False"
+            SeparatorColor="Gray"
+            SelectionMode="Single"
+            ItemSelected="ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:WizViewCell/>

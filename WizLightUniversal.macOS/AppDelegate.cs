@@ -20,7 +20,7 @@ namespace WizLightUniversal.macOS
 
             // Create the tray item w/ icon and menu
             statusItem = NSStatusBar.SystemStatusBar.CreateStatusItem(NSStatusItemLength.Square);
-            statusItem.Button.Image = NSImage.ImageNamed("TrayIcon_18_18.ico");
+            statusItem.Button.Image = NSImage.ImageNamed("TrayIcon_18_18.png");
 
             statusMenu = new NSMenu();
             NSMenuItem quitMenuItem = new NSMenuItem("Quit");

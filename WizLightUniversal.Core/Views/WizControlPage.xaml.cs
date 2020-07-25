@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +11,11 @@ using Xamarin.Forms.Xaml;
 namespace WizLightUniversal.Core.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class WizViewCell : ViewCell
+    public partial class WizControlPage : ContentPage
     {
-        public WizViewCell()
+        public WizControlPage(WizLightModel model)
         {
+            this.BindingContext = model;
             InitializeComponent();
         }
     }

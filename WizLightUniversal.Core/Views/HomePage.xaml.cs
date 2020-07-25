@@ -25,7 +25,10 @@ namespace WizLightUniversal.Core.Views
 
         public void Refresh()
         {
-            //TODO
+            foreach (WizLightModel light in lights)
+            {
+                light.Refresh();
+            }
         }
 
         async void PreferencesButton_Clicked(object sender, EventArgs e)
@@ -36,6 +39,16 @@ namespace WizLightUniversal.Core.Views
         void RefreshButton_Clicked(object sender, EventArgs e)
         {
             Refresh();
+        }
+
+        async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+            {
+                WizLightModel boundModel = e.SelectedItem as WizLightModel;
+                listView.SelectedItem = null;
+                await Navigation.PushAsync(new WizControlPage(boundModel));
+            }
         }
     }
 }

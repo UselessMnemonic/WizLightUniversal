@@ -3,24 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:WizLightUniversal.Core.Views"
              mc:Ignorable="d"
              x:Class="WizLightUniversal.Core.Views.WizViewCell">
     <ViewCell.View>
-        <Grid
-            Padding="5"
-            ColumnSpacing="5"
-            RowSpacing="10">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackLayout Grid.Column="1" VerticalOptions="Center" Spacing="3">
-                <Label Text="{Binding IP}" FontSize="Small"/>
+
+            <StackLayout Grid.Column="0" Padding="5">
+                <Label Text="{Binding IP}" FontSize="Medium"/>
                 <Label Text="{Binding MAC}" FontSize="Micro"/>
             </StackLayout>
-            <StackLayout Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End">
-                <Switch IsToggled="{Binding Power}"/>
-            </StackLayout>
+            
+            <views:ToggleButton IsToggled="{Binding Power}" HeightRequest="25" WidthRequest="50"
+                               FontSize="Default" FontFamily="Helvetica" Grid.Column="2">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup Name="ToggleStates">
+                        <VisualState Name="ToggledOff">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="OFF"/>
+                                <Setter Property="TextColor" Value="Gray"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="ToggledOn">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="ON"/>
+                                <Setter Property="TextColor" Value="Black"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </views:ToggleButton>
+            
         </Grid>
     </ViewCell.View>
 </ViewCell>
