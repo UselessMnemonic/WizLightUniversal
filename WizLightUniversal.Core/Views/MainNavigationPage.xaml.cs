@@ -17,6 +17,12 @@ namespace WizLightUniversal.Core.Views
         public MainNavigationPage() : base(new HomePage())
         {
             HomePage = (HomePage) RootPage;
+            Popped += OnPageUnload;
+        }
+
+        public void OnPageUnload(object sender, NavigationEventArgs e)
+        {
+            GC.Collect();
         }
     }
 }
