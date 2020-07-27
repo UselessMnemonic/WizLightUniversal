@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Windows;
 using System.Windows.Forms;
 using Xamarin.Forms;
@@ -26,7 +27,9 @@ namespace WizLightUniversal.Windows
             trayIcon = new NotifyIcon();
             trayIcon.MouseUp += NotifyIconOnMouseUp;
             trayIcon.MouseMove += NotifyIconOnMouseMove;
-            trayIcon.Icon = WizLightUniversal.Windows.Properties.Resources.TrayIcon_32_32;
+
+            // listen for theme changes
+            SystemEvents.UserPreferenceChanging += (obj, evnt) => UpdateTrayIcon();
 
             // create context menu
             trayIcon.ContextMenuStrip = new ContextMenuStrip();
@@ -48,8 +51,23 @@ namespace WizLightUniversal.Windows
 
             // enable tray icon and start app
             Core.PreferencesProvider.Default = new WinPreferencesProvider();
-            trayIcon.Visible = true;
+            UpdateTrayIcon();
             IsQuitting = false;
+        }
+
+        // Select the appropriate tray icon color--white or black
+        private void UpdateTrayIcon()
+        {
+            object usesLightTheme = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme", false);
+            if ((int)usesLightTheme == 0)
+            {
+                trayIcon.Icon = WizLightUniversal.Windows.Properties.Resources.TrayIcon_White;
+            }
+            else
+            {
+                trayIcon.Icon = WizLightUniversal.Windows.Properties.Resources.TrayIcon_Black;
+            }
+            trayIcon.Visible = true;
         }
 
         // Store the current position of the mouse on the icon to check if the mouse clicked inside the icon
