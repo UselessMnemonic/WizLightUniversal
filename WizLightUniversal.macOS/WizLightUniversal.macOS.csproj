@@ -96,14 +96,11 @@
     <Compile Include="MacPreferencesProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BundleResource Include="Resources\TrayIcon_18_18.ico" />
-    <BundleResource Include="Resources\TrayIcon_32_32.ico" />
     <BundleResource Include="Resources\Bulb.png" />
     <BundleResource Include="Resources\Brightness.png" />
     <BundleResource Include="Resources\Thermometer.png" />
     <BundleResource Include="Resources\RGB.png" />
-    <BundleResource Include="Resources\TrayIcon_18_18.png" />
-    <BundleResource Include="Resources\TrayIcon_32_32.png" />
+    <BundleResource Include="Resources\TrayIcon_White.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WizLightUniversal.Core\WizLightUniversal.Core.csproj">

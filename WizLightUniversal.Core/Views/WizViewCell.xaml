@@ -15,21 +15,19 @@
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding IP}" FontSize="25"/>
             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding MAC}" FontSize="14" TextColor="Gray"/>
 
-            <views:ToggleButton Grid.Row="1" Grid.Column="2" IsToggled="{Binding Power}" Grid.RowSpan="1" Margin="5">
+            <views:ToggleButton Grid.Row="1" Grid.Column="2" IsToggled="{Binding Power}">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup Name="ToggleStates">
                         <VisualState Name="ToggledOff">
                             <VisualState.Setters>
                                 <Setter Property="Text" Value="OFF"/>
-                                <Setter Property="TextColor" Value="WhiteSmoke"/>
-                                <Setter Property="BackgroundColor" Value="DimGray"/>
+                                <Setter Property="TextColor" Value="LightGray"/>
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState Name="ToggledOn">
                             <VisualState.Setters>
                                 <Setter Property="Text" Value="ON"/>
                                 <Setter Property="TextColor" Value="Black"/>
-                                <Setter Property="BackgroundColor" Value="WhiteSmoke"/>
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>

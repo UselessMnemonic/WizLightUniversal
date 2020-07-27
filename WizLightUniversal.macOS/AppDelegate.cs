@@ -3,6 +3,7 @@ using AppKit;
 using Foundation;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.MacOS;
+using CoreGraphics;
 
 namespace WizLightUniversal.macOS
 {
@@ -20,7 +21,7 @@ namespace WizLightUniversal.macOS
 
             // Create the tray item w/ icon and menu
             statusItem = NSStatusBar.SystemStatusBar.CreateStatusItem(NSStatusItemLength.Square);
-            statusItem.Button.Image = NSImage.ImageNamed("TrayIcon_18_18.png");
+            statusItem.Button.Image = NSImage.ImageNamed("TrayIcon_White.ico").ResizeTo(new CGSize(18, 18));
 
             statusMenu = new NSMenu();
             NSMenuItem quitMenuItem = new NSMenuItem("Quit");

@@ -20,7 +20,9 @@
             IsGroupingEnabled="False"
             SeparatorColor="Gray"
             SelectionMode="Single"
-            ItemSelected="ItemSelected">
+            ItemSelected="ItemSelected"
+            RowHeight="70"
+            HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:WizViewCell/>

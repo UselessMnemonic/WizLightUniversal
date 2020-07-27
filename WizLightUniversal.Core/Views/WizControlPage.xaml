@@ -44,7 +44,7 @@
 
             <Image Grid.Row="11" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{OnPlatform Default=Thermometer.png,WPF=Resources/Thermometer.png}"/>
             <Slider Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="TempSlider" Maximum="{Binding MaximumTemperature}" Minimum="{Binding MinimumTemperature}" Value="{Binding Temperature}" ThumbColor="Black" MinimumTrackColor="Orange" MaximumTrackColor="CornflowerBlue"/>
-            <Label Grid.Row="11" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference TempSlider}" Text="{Binding Path=Value,StringFormat='{0:0}° Kelvin'}"/>
+            <Label Grid.Row="11" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference TempSlider}" Text="{Binding Path=Value,StringFormat='{0:0}° K'}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

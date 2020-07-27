@@ -11,7 +11,7 @@ namespace WizLightUniversal.Core.Views
             BindableProperty.Create("IsToggled", typeof(bool), typeof(ToggleButton),
                                     false, propertyChanged: OnIsToggledChanged);
 
-        public ToggleButton()
+        public ToggleButton() : base()
         {
             Clicked += (sender, args) => IsToggled ^= true;
         }
