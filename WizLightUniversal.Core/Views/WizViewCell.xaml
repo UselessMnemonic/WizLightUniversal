@@ -21,7 +21,7 @@
                         <VisualState Name="ToggledOff">
                             <VisualState.Setters>
                                 <Setter Property="Text" Value="OFF"/>
-                                <Setter Property="TextColor" Value="LightGray"/>
+                                <Setter Property="TextColor" Value="Gray"/>
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState Name="ToggledOn">
