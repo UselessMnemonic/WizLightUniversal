@@ -30,30 +30,25 @@ namespace WizLightUniversal.Core.Models
 
         public WizLightModel()
         {
-            IP = "0.0.0.0";
-            MAC = "00:00:00:00";
-            MinimumTemperature = 0;
-            MaximumTemperature = 100;
+            IP = "255.255.255.255";
+            MAC = "ff:ff:ff:ff:ff:ff";
+            MinimumTemperature = 2000;
+            MaximumTemperature = 6500;
 
-            Red = 0;
-            Green = 0;
-            Blue = 0;
+            Red = 255;
+            Green = 255;
+            Blue = 255;
 
             WarmWhite = 0;
             CoolWhite = 0;
             Temperature = MinimumTemperature;
 
-            Brightness = 0;
+            Brightness = 100;
             Power = false;
 
             UsingColor = true;
             UsingTemp = false;
             UsingScene = false;
-        }
-
-        public void Refresh()
-        {
-            throw new NotImplementedException();
         }
     }
 }
