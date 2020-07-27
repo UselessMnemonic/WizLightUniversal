@@ -15,8 +15,9 @@ namespace WizLightUniversal.Core.Views
     {
         public WizControlPage(WizLightModel model)
         {
-            this.BindingContext = model;
             InitializeComponent();
+            this.BindingContext = model;
+            Console.WriteLine(AppDomain.CurrentDomain.BaseDirectory.ToString());
         }
     }
 }

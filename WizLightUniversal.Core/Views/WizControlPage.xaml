@@ -11,53 +11,40 @@
     <ContentPage.ToolbarItems>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid Margin="20">
+        <Grid Margin="20" ColumnSpacing="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+            </Grid.RowDefinitions>
 
-            <Image Grid.Row="0" Grid.Column="0" Source="Bulb.png" VerticalOptions="Start" Aspect="AspectFit" HeightRequest="70" HorizontalOptions="Center"/>
+            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" HorizontalOptions="Center" VerticalOptions="Center" Source="{OnPlatform Default=Bulb.png,WPF=Resources/Bulb.png}"/>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" VerticalOptions="End" FontSize="Title" Text="{Binding IP}" x:Name="IPLabel"/>
+            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" VerticalOptions="Start" FontSize="Micro" Text="{Binding MAC}" x:Name="MACLabel" TextColor="Gray"/>
 
-            <StackLayout Grid.Row="0" Grid.Column="1">
-                <Label FontSize="Title" Text="{Binding IP}" x:Name="IPLabel"/>
-                <Label FontSize="Micro" Text="{Binding MAC}" x:Name="MACLabel" TextColor="Gray"/>
-            </StackLayout>
+            <Image Grid.Row="3" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{OnPlatform Default=Brightness.png,WPF=Resources/Brightness.png}"/>
+            <Slider Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" Value="{Binding Brightness}" Minimum="0" Maximum="100" ThumbColor="Black" MinimumTrackColor="Black" MaximumTrackColor="WhiteSmoke"/>
 
-            <Image Grid.Row="1" Grid.Column="0" Source="RGB.png" HeightRequest="50"/>
-            <Grid Grid.Row="1" Grid.RowSpan="3" Grid.Column="1">
-                <Label BindingContext="{x:Reference RedSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="0" Grid.Column="5" HorizontalOptions="Start"/>
-                <Slider x:Name="RedSlider" Maximum="255" Minimum="0" Value="{Binding Red}"
-                        ThumbColor="Red" MinimumTrackColor="Red" MaximumTrackColor="#FFEEEE" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
-                
-                <Label BindingContext="{x:Reference GreenSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="1" Grid.Column="5" HorizontalOptions="Start"/>
-                <Slider x:Name="GreenSlider" Maximum="255" Minimum="0" Value="{Binding Green}"
-                        ThumbColor="Green" MinimumTrackColor="Green" MaximumTrackColor="#EEFFEE" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"/>
-                
-                <Label BindingContext="{x:Reference BlueSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="2" Grid.Column="5" HorizontalOptions="Start"/>
-                <Slider x:Name="BlueSlider" Maximum="255" Minimum="0" Value="{Binding Blue}"
-                        ThumbColor="Blue" MinimumTrackColor="Blue" MaximumTrackColor="#EEEEFF" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"/>
-                
-                <Label BindingContext="{x:Reference WarmWhiteSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="4" Grid.Column="5" HorizontalOptions="Start"/>
-                <Slider x:Name="WarmWhiteSlider" Maximum="100" Minimum="0" Value="{Binding WarmWhite}"
-                        ThumbColor="Orange" MinimumTrackColor="Orange" MaximumTrackColor="#FFEEEE" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"/>
-                
-                <Label BindingContext="{x:Reference CoolWhiteSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}" Grid.Row="5" Grid.Column="5" HorizontalOptions="Start"/>
-                <Slider x:Name="CoolWhiteSlider" Maximum="100" Minimum="0" Value="{Binding CoolWhite}"
-                        ThumbColor="CornflowerBlue" MinimumTrackColor="CornflowerBlue" MaximumTrackColor="#EEEEFF" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5"/>
-            </Grid>
+            <Image Grid.Row="5" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{OnPlatform Default=RGB.png,WPF=Resources/RGB.png}"/>
+            <Slider Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="RedSlider" Maximum="255" Minimum="0" Value="{Binding Red}" ThumbColor="Red" MinimumTrackColor="Red" MaximumTrackColor="#FFEEEE"/>
+            <Label Grid.Row="5" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference RedSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}"/>
 
-            <Image Grid.Row="4" Grid.Column="0" Source="Thermometer.png" HeightRequest="50"/>
-            <StackLayout Grid.Row="4" Grid.Column="1">
-                <Label BindingContext="{x:Reference TempSlider}" Text="{Binding Path=Value,StringFormat='{0:0}° Kelvin'}" HorizontalOptions="End"/>
-                <Slider x:Name="TempSlider" Maximum="{Binding MaximumTemperature}" Minimum="{Binding MinimumTemperature}" Value="{Binding Temperature}"
-                        ThumbColor="Black" MinimumTrackColor="Orange" MaximumTrackColor="CornflowerBlue"/>
-            </StackLayout>
+            <Slider Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="GreenSlider" Maximum="255" Minimum="0" Value="{Binding Green}" ThumbColor="Green" MinimumTrackColor="Green" MaximumTrackColor="#EEFFEE"/>
+            <Label Grid.Row="6" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference GreenSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}"/>
 
-            <Image Grid.Row="5" Grid.Column="0" Source="Brightness.png" HeightRequest="50"/>
-            <Slider Value="{Binding Brightness}" Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="100"
-                    ThumbColor="Black" MinimumTrackColor="Black" MaximumTrackColor="WhiteSmoke"/>
+            <Slider Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="BlueSlider" Maximum="255" Minimum="0" Value="{Binding Blue}" ThumbColor="Blue" MinimumTrackColor="Blue" MaximumTrackColor="#EEEEFF"/>
+            <Label Grid.Row="7" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference BlueSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}"/>
 
+            <Slider Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="WarmWhiteSlider" Maximum="100" Minimum="0" Value="{Binding WarmWhite}" ThumbColor="Orange" MinimumTrackColor="Orange" MaximumTrackColor="#FFEEEE"/>
+            <Label Grid.Row="8" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference WarmWhiteSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}"/>
+
+            <Slider Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="CoolWhiteSlider" Maximum="100" Minimum="0" Value="{Binding CoolWhite}" ThumbColor="CornflowerBlue" MinimumTrackColor="CornflowerBlue" MaximumTrackColor="#EEEEFF"/>
+            <Label Grid.Row="9" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference CoolWhiteSlider}" Text="{Binding Path=Value,StringFormat='{0:0}'}"/>
+
+            <Image Grid.Row="11" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Source="{OnPlatform Default=Thermometer.png,WPF=Resources/Thermometer.png}"/>
+            <Slider Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="2" VerticalOptions="Center" x:Name="TempSlider" Maximum="{Binding MaximumTemperature}" Minimum="{Binding MinimumTemperature}" Value="{Binding Temperature}" ThumbColor="Black" MinimumTrackColor="Orange" MaximumTrackColor="CornflowerBlue"/>
+            <Label Grid.Row="11" Grid.Column="3" VerticalOptions="Center" BindingContext="{x:Reference TempSlider}" Text="{Binding Path=Value,StringFormat='{0:0}° Kelvin'}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

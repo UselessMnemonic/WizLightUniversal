@@ -25,10 +25,7 @@ namespace WizLightUniversal.Core.Views
 
         public void Refresh()
         {
-            foreach (WizLightModel light in lights)
-            {
-                light.Refresh();
-            }
+            throw new NotImplementedException();
         }
 
         async void PreferencesButton_Clicked(object sender, EventArgs e)

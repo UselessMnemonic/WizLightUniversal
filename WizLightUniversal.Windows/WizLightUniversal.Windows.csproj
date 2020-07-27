@@ -54,7 +54,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\TrayIcon_32_32.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -162,9 +163,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TrayIcon_32_32.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\WizLightUniversal.Core\WizLightUniversal.Core.csproj">
       <Project>{2cfbacc8-ca72-4aa1-9a86-90858f724498}</Project>
       <Name>WizLightUniversal.Core</Name>
@@ -205,6 +203,12 @@
     <Content Include="Resources\Thermometer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrayIcon_Black.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TrayIcon_White.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
