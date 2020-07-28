@@ -1,43 +1,79 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using WizLightUniversal.Core.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using OpenWiz;
+using System.Net;
 
 namespace WizLightUniversal.Core.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        private Collection<WizLightModel> lights;
+        private readonly ObservableCollection<WizLightModel> lights;
+        private int lastUsedHomeID;
+        private WizDiscoveryService discoveryService;
+        private volatile bool refreshInProgress;
 
         public HomePage()
         {
             InitializeComponent();
-            lights = new Collection<WizLightModel>();
-            lights.Add(new WizLightModel());
+            lights = new ObservableCollection<WizLightModel>();
             listView.ItemsSource = lights;
+            refreshInProgress = false;
+            lastUsedHomeID = 0;
+            Refresh();
         }
 
-        public void Refresh()
+        // refresh the light list fron LAN
+        public async void Refresh()
         {
-            throw new NotImplementedException();
+            if (!refreshInProgress)
+            {
+                refreshInProgress = true;
+
+                if (lastUsedHomeID != PreferencesProvider.Default.HomeID)
+                {
+                    lights.Clear();
+                    lastUsedHomeID = PreferencesProvider.Default.HomeID;
+                    SpawnDiscoveryService();
+                }
+
+                discoveryService.Start(WhenLightDiscovered);
+                await Task.Delay(2000);
+                discoveryService.Stop();
+                refreshInProgress = false;
+            }
         }
 
+        // called when a light is discovered
+        public void WhenLightDiscovered(WizHandle handle)
+        {
+            foreach (var light in lights)
+            {
+                if (light.MAC == handle.Mac) return;
+            }
+            WizLightModel model = new WizLightModel(handle);
+            model.ShouldPoll = true;
+            lights.Add(model);
+        }
+
+        // called when preferences are selected
         async void PreferencesButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new PreferencesPage());
         }
 
+        // called when a refresh is requested
         void RefreshButton_Clicked(object sender, EventArgs e)
         {
             Refresh();
         }
 
+        // called when a light is selected
         async void ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem != null)
@@ -45,6 +81,21 @@ namespace WizLightUniversal.Core.Views
                 WizLightModel boundModel = e.SelectedItem as WizLightModel;
                 listView.SelectedItem = null;
                 await Navigation.PushAsync(new WizControlPage(boundModel));
+            }
+        }
+
+        // starts the discovery service and pauses
+        public void SpawnDiscoveryService()
+        {
+            if (lastUsedHomeID != 0)
+            {
+                (NetworkInterface nic, IPAddress ip) = PreferencesProvider.Default.NetworkInformation;
+                if (nic != null && ip != null)
+                {
+                    discoveryService = null;
+                    GC.Collect();
+                    discoveryService = new WizDiscoveryService(lastUsedHomeID, ip.ToString(), nic.GetPhysicalAddress().GetAddressBytes());
+                }
             }
         }
     }
