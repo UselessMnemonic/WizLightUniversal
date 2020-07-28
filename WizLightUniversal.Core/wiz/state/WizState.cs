@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System;
+using System.Diagnostics;
 
 namespace OpenWiz
 {
@@ -122,8 +123,8 @@ namespace OpenWiz
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
+                Debug.WriteLine(e.StackTrace);
             }
             return state;
         }
@@ -147,8 +148,8 @@ namespace OpenWiz
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
+                Debug.WriteLine(e.StackTrace);
             }
             return state;
         }
@@ -172,8 +173,8 @@ namespace OpenWiz
             }
             catch (JsonException e)
             {
-                Console.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
-                Console.WriteLine(e.StackTrace);
+                Debug.WriteLine($"[INFO] WizLightState::Parse encountered an exception -- {e.Message}");
+                Debug.WriteLine(e.StackTrace);
             }
             return state;
         }
