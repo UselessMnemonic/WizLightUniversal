@@ -42,10 +42,13 @@ namespace WizLightUniversal.Core.Views
                     SpawnDiscoveryService();
                 }
 
-                discoveryService.Start(WhenLightDiscovered);
-                await Task.Delay(2000);
-                discoveryService.Stop();
-                refreshInProgress = false;
+                if (discoveryService != null)
+                {
+                    discoveryService.Start(WhenLightDiscovered);
+                    await Task.Delay(2000);
+                    discoveryService.Stop();
+                    refreshInProgress = false;
+                }
             }
         }
 
