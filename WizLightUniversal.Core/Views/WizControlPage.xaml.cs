@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WizLightUniversal.Core.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,14 +9,19 @@ namespace WizLightUniversal.Core.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WizControlPage : ContentPage
     {
+        // Constructor
         public WizControlPage(WizLightModel model)
         {
             BindingContext = model;
             InitializeComponent();
 
+            // Set binding programmatically
             TempSlider.SetBinding(Slider.ValueProperty, "Temperature", BindingMode.TwoWay, new RangeToPercentConverter(model.MinimumTemperature, model.MaximumTemperature));
         }
 
+        // That damn temeprature slider gives me a bad headache. The value is reset
+        // anytime the minimum bound is set. Instead, I'll use constant bounds on the slider
+        // and convert in between
         private class RangeToPercentConverter : IValueConverter
         {
             private int sourceMinimum, sourceMaximum;

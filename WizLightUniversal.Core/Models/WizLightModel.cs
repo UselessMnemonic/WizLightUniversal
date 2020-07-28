@@ -2,17 +2,20 @@
 using System.Threading;
 using OpenWiz;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace WizLightUniversal.Core.Models
 {
     public class WizLightModel : INotifyPropertyChanged
     {
+        // Setters are speicfically used to issue updates to lights,
+        // otherwise the backing variable is changed and an update event
+        // is issued.
+        // TODO: Use a WizState to back these properties
         public string IP { get; }
         public string MAC { get; }
         public int MinimumTemperature { get; set; }
         public int MaximumTemperature { get; set; }
-
         private int _red;
         public int Red
         {
@@ -62,19 +65,24 @@ namespace WizLightUniversal.Core.Models
             set { if (_power != value) { _power = value; QueueUpdate(UpdateType.Control); } }
         }
 
+        // The handle and socket are needed to communicate with a light
         private readonly WizHandle Handle;
         private readonly WizSocket Socket;
 
+        // This action loop runs at a predefined period which commits an update
+        // or polls a light's state
+        private const int MAX_TICKS_WITHOUT_UPDATE = 20;
+        private const int TICK_PERIOD_MS = 100;
+
+        private Timer UpdateTimer;
         private int TicksWithoutUpdate;
         private volatile bool UpdatePending;
         private volatile WizState NextUpdate;
-        private Timer UpdateTimer;
 
-        private const int TICKS_WITHOUT_UPDATE_MAX = 20;
-        private const int TICK_PERIOD_MS = 100;
-
+        // This event handler communicates with the controls bound to this model
         public event PropertyChangedEventHandler PropertyChanged;
 
+        // Constructor
         public WizLightModel(WizHandle handle) : this()
         {
             // Initial values for these fields
@@ -93,34 +101,36 @@ namespace WizLightUniversal.Core.Models
             // Start the timer for polling/updating
             NextUpdate = null;
             UpdatePending = false;
-            TicksWithoutUpdate = TICKS_WITHOUT_UPDATE_MAX;
+            TicksWithoutUpdate = MAX_TICKS_WITHOUT_UPDATE;
             UpdateTimer = new Timer(UpdateTimerCallback, this, 0, TICK_PERIOD_MS);
         }
 
-        // Called to ping the light
+        // Action loop for the timer
         private void UpdateTimerCallback(object state)
         {
             try
             {
-                if (UpdatePending)
+                if (UpdatePending) // Send an update this next call
                 {
                     TicksWithoutUpdate = 0;
                     Socket.SendTo(NextUpdate, Handle);
-                    Console.WriteLine($"Model for {Handle.Ip}: Sent update");
-                    UpdatePending = false;
+                    Debug.WriteLine($"Model for {Handle.Ip}: Sent update");
                 }
-                else if (++TicksWithoutUpdate > TICKS_WITHOUT_UPDATE_MAX)
+                else if (++TicksWithoutUpdate > MAX_TICKS_WITHOUT_UPDATE) // Send a poll request this next call
                 {
+                    TicksWithoutUpdate = 0;
                     Socket.SendTo(WizState.MakeGetPilot(), Handle);
-                    Console.WriteLine($"Model for {Handle.Ip}: Sent poll request");
+                    Debug.WriteLine($"Model for {Handle.Ip}: Sent poll request");
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Model for {Handle.Ip}: Failed to issue message -- {e.Message}");
+                Debug.WriteLine($"Model for {Handle.Ip}: Failed to issue message -- {e.Message}");
+                UpdatePending = false;
             }
         }
 
+        // Creates a state when an update needs to be issued
         private enum UpdateType { Color, Temperature, Control };
         private void QueueUpdate(UpdateType type)
         {
@@ -148,24 +158,31 @@ namespace WizLightUniversal.Core.Models
         // Called when data is recieved
         private void WhenGetState(IAsyncResult asyncResult)
         {
-            WizState state = Socket.EndReceiveFrom(Handle, asyncResult);
-            if (state != null)
+            try
             {
-                HandleGetError(state.Error);
-                switch (state.Method)
+                WizState state = Socket.EndReceiveFrom(Handle, asyncResult);
+                if (state != null)
                 {
-                    case WizMethod.getPilot:
-                    case WizMethod.setPilot:
-                        HandleGetPilot(state.Result);
-                        break;
-                    case WizMethod.syncPilot:
-                        HandleGetPilot(state.Params);
-                        break;
-                    case WizMethod.getUserConfig:
-                        HandleGetUserConfig(state.Result);
-                        break;
+                    HandleGetError(state.Error);
+                    switch (state.Method)
+                    {
+                        case WizMethod.getPilot:
+                        case WizMethod.setPilot:
+                            HandleGetPilot(state.Result);
+                            break;
+                        case WizMethod.syncPilot:
+                            HandleGetPilot(state.Params);
+                            break;
+                        case WizMethod.getUserConfig:
+                            HandleGetUserConfig(state.Result);
+                            break;
+                    }
+                    Socket.BeginRecieveFrom(Handle, WhenGetState, null);
                 }
-                Socket.BeginRecieveFrom(Handle, WhenGetState, null);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine($"Model for {Handle.Ip}: Unexpected error\n{e.StackTrace}");
             }
         }
 
@@ -176,7 +193,7 @@ namespace WizLightUniversal.Core.Models
             {
                 MaximumTemperature = config.ExtRange[1];
                 MinimumTemperature = config.ExtRange[0];
-                Console.WriteLine($"Model for {Handle.Ip}: Got configuration");
+                Debug.WriteLine($"Model for {Handle.Ip}: Got configuration");
             }
         }
 
@@ -184,7 +201,7 @@ namespace WizLightUniversal.Core.Models
         private void HandleGetPilot(WizParams pilot)
         {
             TicksWithoutUpdate = 0;
-            Console.WriteLine($"Model for {Handle.Ip}: Got pilot");
+            Debug.WriteLine($"Model for {Handle.Ip}: Got pilot");
             if (pilot != null)
             {
                 // update power and brightness
@@ -241,7 +258,7 @@ namespace WizLightUniversal.Core.Models
 
         private void HandleGetError(WizError error)
         {
-            if (error != null) Console.WriteLine($"Model for {Handle.Ip}: Got error: {error.Message}");
+            if (error != null) Debug.WriteLine($"Model for {Handle.Ip}: Got error: {error.Message}");
         }
 
         private WizLightModel()

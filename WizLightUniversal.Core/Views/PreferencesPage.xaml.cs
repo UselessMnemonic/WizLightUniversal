@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -39,6 +34,7 @@ namespace WizLightUniversal.Core.Views
             SaveButton.IsEnabled = (VerifyHomeID() > 0);
         }
 
+        // verify the home is useable
         private int VerifyHomeID()
         {
             string text = HomeIDEntry.Text;

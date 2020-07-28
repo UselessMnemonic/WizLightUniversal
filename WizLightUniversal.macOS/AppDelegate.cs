@@ -14,6 +14,7 @@ namespace WizLightUniversal.macOS
         private NSMenu statusMenu;
         private NSPopover popover;
 
+        // constructor
         public AppDelegate()
         {
             // Init Xamarin.Forms
@@ -28,12 +29,13 @@ namespace WizLightUniversal.macOS
             quitMenuItem.Activated += (object sender, EventArgs e) => { NSApplication.SharedApplication.Terminate(this); };
             statusMenu.AddItem(quitMenuItem);
 
-            // The core app will run under this app delegate, using the Mac preferences provider
+            // The core app will appear inside a popover
             Core.PreferencesProvider.Default = new MacPreferencesProvider();
             popover = new NSPopover();
             Application.SetCurrentApplication(new Core.App());
         }
 
+        // Called after the application is ready to open the GUI
         public override void DidFinishLaunching(NSNotification notification)
         {
             // Create container for popover
@@ -53,6 +55,7 @@ namespace WizLightUniversal.macOS
             Application.Current.SendStart();
         }
 
+        // Called when the user quits
         public override void WillTerminate(NSNotification notification)
         {
             // Teardown resources
@@ -67,13 +70,13 @@ namespace WizLightUniversal.macOS
             Application.Current.Quit();
         }
 
+        // Called when the tray icon is clicked
         private void StatusItem_Click(object sender, EventArgs e)
         {
             switch (NSApplication.SharedApplication.CurrentEvent.Type)
             {
-                // When the tray item is clicked on, we want it to toggle the popover
+                // When the tray item gets a left-click, toggle the popover
                 case NSEventType.LeftMouseDown:
-
                     if (!popover.Shown)
                     {
                         popover.Show(statusItem.Button.Bounds, statusItem.Button, NSRectEdge.MaxYEdge);
@@ -84,7 +87,7 @@ namespace WizLightUniversal.macOS
                     }
                     break;
 
-                // Show the menu
+                // When the tray item gits a right-click, show the menu
                 case NSEventType.RightMouseDown:
                     statusItem.PopUpStatusItemMenu(statusMenu);
                     break;
@@ -92,6 +95,7 @@ namespace WizLightUniversal.macOS
         }
     }
 
+    // A class that responds to events issued by the popover
     public class PopoverDelegate : NSPopoverDelegate
     {
         private readonly object appLock;
@@ -101,6 +105,7 @@ namespace WizLightUniversal.macOS
             appLock = new object();
         }
 
+        // Send a sleep signal to the Xamarin app when the popover is hidden
         public override void DidClose(NSNotification notification)
         {
             lock (appLock)
@@ -109,6 +114,7 @@ namespace WizLightUniversal.macOS
             }
         }
 
+        // Send a wake signal to the Xamaran app when the popover is shown
         public override void DidShow(NSNotification notification)
         {
             lock (appLock)

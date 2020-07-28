@@ -3,8 +3,10 @@ using WizLightUniversal.Core;
 
 namespace WizLightUniversal.macOS
 {
+    // The preferences provider offered by macOS
     public class MacPreferencesProvider : PreferencesProvider
     {
+        // This is the backend to the user preferences API
         private NSUserDefaults defaults;
 
         public override int HomeID
@@ -20,6 +22,7 @@ namespace WizLightUniversal.macOS
             }
         }
 
+        // Constructor
         public MacPreferencesProvider()
         {
             defaults = new NSUserDefaults();

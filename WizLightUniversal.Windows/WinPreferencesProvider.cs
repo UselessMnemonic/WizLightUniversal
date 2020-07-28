@@ -1,11 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using WizLightUniversal.Core;
 
 namespace WizLightUniversal.Windows
 {
+    // The preferences provider offered by Windows 
     public class WinPreferencesProvider : PreferencesProvider
     {
         public override int HomeID

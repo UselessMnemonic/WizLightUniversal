@@ -18,6 +18,7 @@ namespace WizLightUniversal.Core.Views
         private volatile WizDiscoveryService discoveryService;
         private volatile bool refreshInProgress;
 
+        // Constructor
         public HomePage()
         {
             InitializeComponent();

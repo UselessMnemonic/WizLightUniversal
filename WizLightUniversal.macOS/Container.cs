@@ -11,7 +11,6 @@ namespace WizLightUniversal.macOS
 	{
 		private NSViewController contentViewController;
 		private Core.Views.MainNavigationPage mainNavigationPage = Application.Current.MainPage as Core.Views.MainNavigationPage;
-
 		public Container(IntPtr handle) : base(handle) { }
 
 		// Generate a controller
@@ -23,7 +22,6 @@ namespace WizLightUniversal.macOS
 				storyboard.InstantiateControllerWithIdentifier("Container");
 
 			controller.contentViewController = Application.Current.MainPage.CreateViewController();
-
 			return controller;
 		}
 
@@ -43,13 +41,14 @@ namespace WizLightUniversal.macOS
 			}
 		}
 
+		// Called when the content is layed out into the popover
 		public override void ViewDidLayout()
 		{
 			base.ViewDidLayout();
 			contentViewController.View.Frame = Content.Frame;
 		}
 
-		// Update navigation bar
+		// Called when a navigation event is issued, to show/hide navigation buttons
 		private void SetNavigationBarState()
 		{ 
 			Page currentPage = mainNavigationPage.CurrentPage;
@@ -59,16 +58,19 @@ namespace WizLightUniversal.macOS
 			PreferencesButton.Hidden = RefreshButton.Hidden = !BackButton.Hidden;
         }
 
+		// Called when the back button is clicked
 		partial void Back_Clicked(NSButton sender)
         {
 			((Core.Views.MainNavigationPage)Application.Current.MainPage).PopAsync();
         }
 
+		// Called when the preferences button is clicked
 		partial void Preferences_Clicked(NSButton sender)
         {
 			((Core.Views.MainNavigationPage)Application.Current.MainPage).PushAsync(new Core.Views.PreferencesPage());
         }
 
+		// Called when the refresh button is clicked
 		partial void Refresh_Clicked(NSButton sender)
         {
 			((Core.Views.MainNavigationPage)Application.Current.MainPage).HomePage.Refresh();

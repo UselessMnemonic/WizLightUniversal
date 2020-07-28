@@ -20,6 +20,7 @@ namespace WizLightUniversal.Core.Views
             Popped += OnPageUnload;
         }
 
+        // TODO: Find the source of all that used up memory... 40MB at least!
         public void OnPageUnload(object sender, NavigationEventArgs e)
         {
             GC.Collect();

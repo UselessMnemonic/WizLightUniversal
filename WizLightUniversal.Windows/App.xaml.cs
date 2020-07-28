@@ -17,8 +17,10 @@ namespace WizLightUniversal.Windows
         private System.Drawing.Point lastMousePositionInIcon;
         private volatile bool IsQuitting;
 
+        // Called when the app needs to initialize
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Init Xamarin.Forms
             Forms.Init();
 
             base.OnStartup(e);
@@ -58,8 +60,8 @@ namespace WizLightUniversal.Windows
         // Select the appropriate tray icon color--white or black
         private void UpdateTrayIcon()
         {
-            object usesLightTheme = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme", false);
-            if ((int)usesLightTheme == 0)
+            object usesLightTheme = Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize", "AppsUseLightTheme", 0);
+            if ((int)usesLightTheme == 0) // Not using light theme, or perhaps are not on Windows 10
             {
                 trayIcon.Icon = WizLightUniversal.Windows.Properties.Resources.TrayIcon_White;
             }
@@ -86,10 +88,7 @@ namespace WizLightUniversal.Windows
             }
         }
 
-        /// <summary>
-        /// Called when clicked outside the window.
-        /// Toggles the window to get hidden.
-        /// </summary> 
+        // Called when the user clicks outside of the window
         private void MainWindow_Deactivated(object sender, EventArgs e)
         {
             // The window is deactivated anytime it is clicked outside its bounds
@@ -102,9 +101,7 @@ namespace WizLightUniversal.Windows
 
         private enum QuadrantCorner { TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
 
-        /// <summary>
-        /// Toggles the window between visible and hidden.
-        /// </summary>
+        // Toggles the visibility of the window and its location on the screen
         private void ToggleWindow()
         {
             if (IsQuitting) return;
@@ -140,6 +137,7 @@ namespace WizLightUniversal.Windows
                         break;
                 }
 
+                // Show the window on screen
                 Application.Current.SendResume();
                 MainWindow.Show();
                 MainWindow.Activate();
