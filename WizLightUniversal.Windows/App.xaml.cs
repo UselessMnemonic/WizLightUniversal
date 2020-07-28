@@ -36,6 +36,7 @@ namespace WizLightUniversal.Windows
             trayIcon.ContextMenuStrip.Items.Add("Quit").Click += (s, eArg) => Applicaton_Quit();
 
             // create window
+            Core.PreferencesProvider.Default = new WinPreferencesProvider();
             MainWindow = new FormsApplicationPage
             {
                 Title = "WizLightUniversal",
@@ -50,7 +51,6 @@ namespace WizLightUniversal.Windows
             MainWindow.Deactivated += MainWindow_Deactivated;
 
             // enable tray icon and start app
-            Core.PreferencesProvider.Default = new WinPreferencesProvider();
             UpdateTrayIcon();
             IsQuitting = false;
         }

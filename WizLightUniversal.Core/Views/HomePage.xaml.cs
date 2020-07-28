@@ -57,7 +57,6 @@ namespace WizLightUniversal.Core.Views
                 if (light.MAC == handle.Mac) return;
             }
             WizLightModel model = new WizLightModel(handle);
-            model.ShouldPoll = true;
             lights.Add(model);
         }
 
@@ -78,9 +77,9 @@ namespace WizLightUniversal.Core.Views
         {
             if (e.SelectedItem != null)
             {
-                WizLightModel boundModel = e.SelectedItem as WizLightModel;
+                WizControlPage controlPage = new WizControlPage((WizLightModel) e.SelectedItem);
                 listView.SelectedItem = null;
-                await Navigation.PushAsync(new WizControlPage(boundModel));
+                await Navigation.PushAsync(controlPage);
             }
         }
 
