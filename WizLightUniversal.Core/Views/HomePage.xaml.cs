@@ -15,7 +15,7 @@ namespace WizLightUniversal.Core.Views
     {
         private readonly ObservableCollection<WizLightModel> lights;
         private int lastUsedHomeID;
-        private WizDiscoveryService discoveryService;
+        private volatile WizDiscoveryService discoveryService;
         private volatile bool refreshInProgress;
 
         public HomePage()
