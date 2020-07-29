@@ -23,15 +23,6 @@
             ItemSelected="ItemSelected"
             RowHeight="70"
             HasUnevenRows="True">
-            <ListView.Header>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="20"/>
-                    </Grid.ColumnDefinitions>
-                    <CheckBox Grid.Row="0" Grid.Column="0" HorizontalOptions="End" x:Name="AmbientCheckbox" CheckedChanged="AmbientCheckbox_CheckedChanged" IsEnabled="false"/>
-                    <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Start" VerticalOptions="Center" Text="Use Ambient"/>
-                </Grid>
-            </ListView.Header>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <views:WizViewCell/>

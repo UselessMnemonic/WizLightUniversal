@@ -73,10 +73,11 @@ namespace WizLightUniversal.Core.Models
 
         // This action loop runs at a predefined period which commits an update
         // or polls a light's state
-        private const int MAX_TICKS_WITHOUT_UPDATE = 10;
-        private const int TICK_PERIOD_MS = 100;
+        private const int MAX_TICKS_WITHOUT_UPDATE = 5;
+        private const int TICK_PERIOD_MS = 200;
 
         private Timer UpdateTimer;
+        public bool ShouldUpdate { get; set; }
         private int TicksWithoutUpdate;
         private volatile bool UpdatePending;
         private volatile WizState NextUpdate;
@@ -101,8 +102,9 @@ namespace WizLightUniversal.Core.Models
             Socket.SendTo(WizState.MakeGetUserConfig(), Handle);
             Socket.SendTo(WizState.MakeGetSystemConfig(), Handle);
 
-            // Start the timer for polling/updating
+            // Setup timer for polling/updating
             NextUpdate = null;
+            LastPilot = null;
             UpdatePending = false;
             TicksWithoutUpdate = MAX_TICKS_WITHOUT_UPDATE;
             UpdateTimer = new Timer(UpdateTimerCallback, this, 0, TICK_PERIOD_MS);
@@ -111,6 +113,7 @@ namespace WizLightUniversal.Core.Models
         // Action loop for the timer
         private void UpdateTimerCallback(object state)
         {
+            if (!ShouldUpdate) return;
             try
             {
                 if (UpdatePending) // Send an update this next call
@@ -135,6 +138,7 @@ namespace WizLightUniversal.Core.Models
         }
 
         // Creates a state when an update needs to be issued
+        // Also overwrites any previous update
         private enum UpdateType { Color, Temperature, Control };
         private void QueueUpdate(UpdateType type)
         {
@@ -142,6 +146,7 @@ namespace WizLightUniversal.Core.Models
             switch(type)
             {
                 case UpdateType.Color:
+                    NextUpdate.Params.State = true;
                     NextUpdate.Params.R = _red;
                     NextUpdate.Params.G = _green;
                     NextUpdate.Params.B = _blue;
@@ -149,6 +154,7 @@ namespace WizLightUniversal.Core.Models
                     NextUpdate.Params.C = _cool;
                     break;
                 case UpdateType.Temperature:
+                    NextUpdate.Params.State = true;
                     NextUpdate.Params.Temp = _temp;
                     break;
                 case UpdateType.Control:
@@ -197,7 +203,7 @@ namespace WizLightUniversal.Core.Models
             }
         }
 
-        // Handles the user configuration
+        // Handles configuration data
         private void HandleGetConfig(WizResult config)
         {
             if (config != null)
@@ -211,10 +217,12 @@ namespace WizLightUniversal.Core.Models
                 if (config.ModuleName != null && config.ModuleName.Length > 0)
                 {
                     Name = config.ModuleName;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Name"));
                 }
                 if (config.FwVersion != null && config.FwVersion.Length > 0)
                 {
                     Version = $"v{config.FwVersion}";
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Version"));
                 }
             }
         }
@@ -222,11 +230,13 @@ namespace WizLightUniversal.Core.Models
         // Handles a pilot (state) update
         private void HandleGetPilot(WizParams pilot)
         {
-            TicksWithoutUpdate = 0;
-            Debug.WriteLine($"Model for {Handle.Ip}: Got pilot");
             if (pilot != null)
             {
+                // Update... errr, the update status
                 LastPilot = pilot;
+                TicksWithoutUpdate = 0;
+                Debug.WriteLine($"Model for {Handle.Ip}: Got pilot");
+
                 // update power and brightness
                 if (pilot.State.HasValue)
                 {
@@ -279,11 +289,13 @@ namespace WizLightUniversal.Core.Models
             }
         }
 
+        // Handle Error
         private void HandleGetError(WizError error)
         {
             if (error != null) Debug.WriteLine($"Model for {Handle.Ip}: Got error: {error.Message}");
         }
 
+        // A default constructor
         private WizLightModel()
         {
             // Default values
@@ -298,28 +310,21 @@ namespace WizLightUniversal.Core.Models
         }
 
         private WizParams LastPilot;
-        private WizParams SavedPilot;
-        public void SavePilot()
+        private WizParams GetLastPilot()
         {
-            if (LastPilot != null)
+            WizParams clone = new WizParams
             {
-                SavedPilot = new WizParams();
-                SavedPilot.State = LastPilot.State;
-                SavedPilot.Dimming = LastPilot.Dimming;
-                SavedPilot.R = LastPilot.R;
-                SavedPilot.G = LastPilot.G;
-                SavedPilot.B = LastPilot.B;
-                SavedPilot.W = LastPilot.W;
-                SavedPilot.C = LastPilot.C;
-                SavedPilot.Temp = LastPilot.Temp;
-            }
-        }
-        public void RestorePilot()
-        {
-            if (SavedPilot != null)
-            {
-                QueueUpdate(new WizState() { Method = WizMethod.setPilot, Params = SavedPilot });
-            }
+                State = LastPilot.State,
+                Dimming = LastPilot.Dimming,
+                R = LastPilot.R,
+                G = LastPilot.G,
+                B = LastPilot.B,
+                Temp = LastPilot.Temp,
+                SceneId = LastPilot.SceneId,
+                Speed = LastPilot.Speed,
+                Play = LastPilot.Play
+            };
+            return clone;
         }
     }
 }

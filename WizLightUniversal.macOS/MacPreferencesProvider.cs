@@ -24,16 +24,8 @@ namespace WizLightUniversal.macOS
             }
         }
 
-        public override Color ScreenAmbientColor
-        {
-            get
-            {
-                return System.Drawing.Color.White;
-            }
-        }
-
         // Constructor
-        public MacPreferencesProvider()
+        public MacPreferencesProvider() : base()
         {
             defaults = new NSUserDefaults();
         }
