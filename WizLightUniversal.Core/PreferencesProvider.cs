@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Net;
+﻿using System.Net;
 using System.Net.NetworkInformation;
 
 namespace WizLightUniversal.Core
@@ -11,31 +10,37 @@ namespace WizLightUniversal.Core
     {
         // Not-so-global access to the provider
         public static PreferencesProvider Default { get; set; }
-        public abstract int HomeID { get; set; }
-        public abstract Color ScreenAmbientColor { get; }
 
-        // Find a NIC and an IPv4 address
-        // TODO: Find a better way of doing this
-        public (NetworkInterface, IPAddress) NetworkInformation
+        // Explicitly defined preferences
+        public abstract int HomeID { get; set; }
+
+        // Any extra parameters the app may need
+        public IPAddress HostIP { get; }
+        public NetworkInterface HostNIC { get; }
+
+        // Any extra set-up info is calculated here
+        public PreferencesProvider()
         {
-            get
+            HostIP = null;
+            HostNIC = null;
+
+            // first find network interface
+            foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                // first find network interface
-                foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
+                if ( (nic.OperationalStatus == OperationalStatus.Up) &&
+                    ((nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet) || (nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
+                   )
                 {
-                    if (((nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet) || (nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211)) && (nic.OperationalStatus == OperationalStatus.Up))
+                    // then find a valid IPv4 address
+                    foreach (UnicastIPAddressInformation ip in nic.GetIPProperties().UnicastAddresses)
                     {
-                        // then find a valid IPv4 address
-                        foreach (UnicastIPAddressInformation ip in nic.GetIPProperties().UnicastAddresses)
+                        if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                         {
-                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                            {
-                                return (nic, ip.Address);
-                            }
+                            HostIP = ip.Address;
+                            HostNIC = nic;
                         }
                     }
                 }
-                return (null, null);
             }
         }
     }
