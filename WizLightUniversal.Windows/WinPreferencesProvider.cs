@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using WizLightUniversal.Core;
+﻿using WizLightUniversal.Core;
 
 namespace WizLightUniversal.Windows
 {
