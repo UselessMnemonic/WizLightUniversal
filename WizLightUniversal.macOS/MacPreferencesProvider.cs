@@ -1,4 +1,6 @@
-﻿using Foundation;
+﻿using AppKit;
+using Foundation;
+using System.Drawing;
 using WizLightUniversal.Core;
 
 namespace WizLightUniversal.macOS
@@ -19,6 +21,14 @@ namespace WizLightUniversal.macOS
             set
             {
                 defaults.SetInt(value, "HomeID");
+            }
+        }
+
+        public override Color ScreenAmbientColor
+        {
+            get
+            {
+                return System.Drawing.Color.White;
             }
         }
 

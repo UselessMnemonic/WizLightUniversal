@@ -13,7 +13,7 @@
             </Grid.RowDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding IP}" FontSize="25"/>
-            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding MAC}" FontSize="14" TextColor="Gray"/>
+            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Name}" FontSize="14" TextColor="Gray"/>
 
             <views:ToggleButton Grid.Row="1" Grid.Column="2" IsToggled="{Binding Power, Mode=TwoWay}">
                 <VisualStateManager.VisualStateGroups>

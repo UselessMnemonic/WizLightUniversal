@@ -14,6 +14,8 @@ namespace WizLightUniversal.Core.Models
         // TODO: Use a WizState to back these properties
         public string IP { get; }
         public string MAC { get; }
+        public string Name { get; set; }
+        public string Version { get; set; }
         public int MinimumTemperature { get; set; }
         public int MaximumTemperature { get; set; }
         private int _red;
@@ -71,7 +73,7 @@ namespace WizLightUniversal.Core.Models
 
         // This action loop runs at a predefined period which commits an update
         // or polls a light's state
-        private const int MAX_TICKS_WITHOUT_UPDATE = 20;
+        private const int MAX_TICKS_WITHOUT_UPDATE = 10;
         private const int TICK_PERIOD_MS = 100;
 
         private Timer UpdateTimer;
@@ -97,6 +99,7 @@ namespace WizLightUniversal.Core.Models
 
             // Send config request
             Socket.SendTo(WizState.MakeGetUserConfig(), Handle);
+            Socket.SendTo(WizState.MakeGetSystemConfig(), Handle);
 
             // Start the timer for polling/updating
             NextUpdate = null;
@@ -115,6 +118,7 @@ namespace WizLightUniversal.Core.Models
                     TicksWithoutUpdate = 0;
                     Socket.SendTo(NextUpdate, Handle);
                     Debug.WriteLine($"Model for {Handle.Ip}: Sent update");
+                    UpdatePending = false;
                 }
                 else if (++TicksWithoutUpdate > MAX_TICKS_WITHOUT_UPDATE) // Send a poll request this next call
                 {
@@ -152,6 +156,13 @@ namespace WizLightUniversal.Core.Models
                     if (_power) NextUpdate.Params.Dimming = _bright;
                     break;
             }
+            LastPilot = NextUpdate.Params;
+            UpdatePending = true;
+        }
+        public void QueueUpdate(WizState state)
+        {
+            NextUpdate = state;
+            LastPilot = state.Params;
             UpdatePending = true;
         }
 
@@ -167,14 +178,14 @@ namespace WizLightUniversal.Core.Models
                     switch (state.Method)
                     {
                         case WizMethod.getPilot:
-                        case WizMethod.setPilot:
                             HandleGetPilot(state.Result);
                             break;
                         case WizMethod.syncPilot:
                             HandleGetPilot(state.Params);
                             break;
                         case WizMethod.getUserConfig:
-                            HandleGetUserConfig(state.Result);
+                        case WizMethod.getSystemConfig:
+                            HandleGetConfig(state.Result);
                             break;
                     }
                     Socket.BeginRecieveFrom(Handle, WhenGetState, null);
@@ -187,13 +198,24 @@ namespace WizLightUniversal.Core.Models
         }
 
         // Handles the user configuration
-        private void HandleGetUserConfig(WizResult config)
+        private void HandleGetConfig(WizResult config)
         {
             if (config != null)
             {
-                MaximumTemperature = config.ExtRange[1];
-                MinimumTemperature = config.ExtRange[0];
-                Debug.WriteLine($"Model for {Handle.Ip}: Got configuration");
+                if (config.ExtRange != null)
+                {
+                    MaximumTemperature = config.ExtRange[1];
+                    MinimumTemperature = config.ExtRange[0];
+                    Debug.WriteLine($"Model for {Handle.Ip}: Got configuration");
+                }
+                if (config.ModuleName != null && config.ModuleName.Length > 0)
+                {
+                    Name = config.ModuleName;
+                }
+                if (config.FwVersion != null && config.FwVersion.Length > 0)
+                {
+                    Version = $"v{config.FwVersion}";
+                }
             }
         }
 
@@ -204,6 +226,7 @@ namespace WizLightUniversal.Core.Models
             Debug.WriteLine($"Model for {Handle.Ip}: Got pilot");
             if (pilot != null)
             {
+                LastPilot = pilot;
                 // update power and brightness
                 if (pilot.State.HasValue)
                 {
@@ -264,12 +287,39 @@ namespace WizLightUniversal.Core.Models
         private WizLightModel()
         {
             // Default values
-            IP = "0.0.0.0";
-            MAC = "000000000000";
+            IP = "Getting IP...";
+            MAC = "Getting MAC...";
+            Name = "Wiz Light";
+            Version = "unknwon version";
             MaximumTemperature = 10000;
             MinimumTemperature = 0;
             _red = _blue = _green = _warm = _cool = _temp = _bright = 0;
             _power = false;
+        }
+
+        private WizParams LastPilot;
+        private WizParams SavedPilot;
+        public void SavePilot()
+        {
+            if (LastPilot != null)
+            {
+                SavedPilot = new WizParams();
+                SavedPilot.State = LastPilot.State;
+                SavedPilot.Dimming = LastPilot.Dimming;
+                SavedPilot.R = LastPilot.R;
+                SavedPilot.G = LastPilot.G;
+                SavedPilot.B = LastPilot.B;
+                SavedPilot.W = LastPilot.W;
+                SavedPilot.C = LastPilot.C;
+                SavedPilot.Temp = LastPilot.Temp;
+            }
+        }
+        public void RestorePilot()
+        {
+            if (SavedPilot != null)
+            {
+                QueueUpdate(new WizState() { Method = WizMethod.setPilot, Params = SavedPilot });
+            }
         }
     }
 }

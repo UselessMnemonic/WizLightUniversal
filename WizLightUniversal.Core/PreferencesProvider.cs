@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Drawing;
+using System.Net;
 using System.Net.NetworkInformation;
 
 namespace WizLightUniversal.Core
@@ -11,6 +12,7 @@ namespace WizLightUniversal.Core
         // Not-so-global access to the provider
         public static PreferencesProvider Default { get; set; }
         public abstract int HomeID { get; set; }
+        public abstract Color ScreenAmbientColor { get; }
 
         // Find a NIC and an IPv4 address
         // TODO: Find a better way of doing this
