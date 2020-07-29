@@ -27,7 +27,7 @@ namespace WizLightUniversal.Core
             // first find network interface
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if ( (nic.OperationalStatus == OperationalStatus.Up) &&
+                if ((nic.OperationalStatus == OperationalStatus.Up) &&
                     ((nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet) || (nic.NetworkInterfaceType == NetworkInterfaceType.Wireless80211))
                    )
                 {

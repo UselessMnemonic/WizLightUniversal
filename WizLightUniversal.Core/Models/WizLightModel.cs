@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
-using OpenWiz;
+﻿using OpenWiz;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading;
 
 namespace WizLightUniversal.Core.Models
 {
@@ -143,7 +143,7 @@ namespace WizLightUniversal.Core.Models
         private void QueueUpdate(UpdateType type)
         {
             NextUpdate = new WizState() { Method = WizMethod.setPilot, Params = new WizParams() };
-            switch(type)
+            switch (type)
             {
                 case UpdateType.Color:
                     NextUpdate.Params.State = true;
@@ -197,7 +197,7 @@ namespace WizLightUniversal.Core.Models
                     Socket.BeginRecieveFrom(Handle, WhenGetState, null);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine($"Model for {Handle.Ip}: Unexpected error\n{e.StackTrace}");
             }

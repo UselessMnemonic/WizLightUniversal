@@ -1,10 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using OpenWiz;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using WizLightUniversal.Core.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using OpenWiz;
 
 namespace WizLightUniversal.Core.Views
 {
