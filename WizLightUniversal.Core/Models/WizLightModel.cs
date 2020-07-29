@@ -73,8 +73,8 @@ namespace WizLightUniversal.Core.Models
 
         // This action loop runs at a predefined period which commits an update
         // or polls a light's state
-        private const int MAX_TICKS_WITHOUT_UPDATE = 5;
-        private const int TICK_PERIOD_MS = 200;
+        private const int MAX_TICKS_WITHOUT_UPDATE = 10;
+        private const int TICK_PERIOD_MS = 100;
 
         private readonly Timer UpdateTimer;
         public bool ShouldUpdate { get; set; }
@@ -113,7 +113,7 @@ namespace WizLightUniversal.Core.Models
         // Action loop for the timer
         private void UpdateTimerCallback(object state)
         {
-            if (!ShouldUpdate)
+            if (ShouldUpdate)
             {
                 try
                 {
