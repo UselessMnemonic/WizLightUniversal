@@ -45,9 +45,12 @@ namespace WizLightUniversal.Core.Views
         // called when a light is discovered
         public void WhenLightDiscovered(WizHandle handle)
         {
-            foreach (var light in lights)
+            foreach (WizLightModel light in lights)
             {
-                if (light.MAC.ToLower() == handle.Mac.ToLower()) return;
+                if (light.MAC.ToLower() == handle.Mac.ToLower())
+                {
+                    return;
+                }
             }
             WizLightModel model = new WizLightModel(handle);
             model.ShouldUpdate = true;
@@ -61,7 +64,10 @@ namespace WizLightUniversal.Core.Views
         }
 
         // called when a refresh is requested
-        void RefreshButton_Clicked(object sender, EventArgs e) => Refresh();
+        void RefreshButton_Clicked(object sender, EventArgs e)
+        {
+            Refresh();
+        }
 
         // called when a light is selected
         async void ItemSelected(object sender, SelectedItemChangedEventArgs e)

@@ -31,21 +31,14 @@ namespace WizLightUniversal.Core.Views
         // validate text continuously 
         private void HomeIDEntry_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SaveButton.IsEnabled = (VerifyHomeID() > 0);
+            SaveButton.IsEnabled = VerifyHomeID() > 0;
         }
 
         // verify the home is useable
         private int VerifyHomeID()
         {
             string text = HomeIDEntry.Text;
-            if (text.Length == 6 && int.TryParse(text, out int homeId))
-            {
-                return homeId;
-            }
-            else
-            {
-                return 0;
-            }
+            return text.Length == 6 && int.TryParse(text, out int homeId) ? homeId : 0;
         }
     }
 }

@@ -18,8 +18,8 @@ namespace WizLightUniversal.Core.Views
 
         public bool IsToggled
         {
-            set { SetValue(IsToggledProperty, value); }
-            get { return (bool)GetValue(IsToggledProperty); }
+            set => SetValue(IsToggledProperty, value);
+            get => (bool)GetValue(IsToggledProperty);
         }
 
         protected override void OnParentSet()
@@ -37,7 +37,7 @@ namespace WizLightUniversal.Core.Views
             toggleButton.Toggled?.Invoke(toggleButton, new ToggledEventArgs(isToggled));
 
             // Set the visual state
-            VisualStateManager.GoToState(toggleButton, isToggled ? "ToggledOn" : "ToggledOff");
+            _ = VisualStateManager.GoToState(toggleButton, isToggled ? "ToggledOn" : "ToggledOff");
         }
     }
 }

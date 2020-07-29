@@ -21,49 +21,49 @@ namespace WizLightUniversal.Core.Models
         private int _red;
         public int Red
         {
-            get { return _red; }
+            get => _red;
             set { if (_red != value) { _red = value; QueueUpdate(UpdateType.Color); } }
         }
         private int _green;
         public int Green
         {
-            get { return _green; }
+            get => _green;
             set { if (_green != value) { _green = value; QueueUpdate(UpdateType.Color); } }
         }
         private int _blue;
         public int Blue
         {
-            get { return _blue; }
+            get => _blue;
             set { if (_blue != value) { _blue = value; QueueUpdate(UpdateType.Color); } }
         }
         private int _warm;
         public int WarmWhite
         {
-            get { return _warm; }
+            get => _warm;
             set { if (_warm != value) { _warm = value; QueueUpdate(UpdateType.Color); } }
         }
         private int _cool;
         public int CoolWhite
         {
-            get { return _cool; }
+            get => _cool;
             set { if (_cool != value) { _cool = value; QueueUpdate(UpdateType.Color); } }
         }
         private int _temp;
         public int Temperature
         {
-            get { return _temp; }
+            get => _temp;
             set { if (_temp != value) { _temp = value; QueueUpdate(UpdateType.Temperature); } }
         }
         private int _bright;
         public int Brightness
         {
-            get { return _bright; }
+            get => _bright;
             set { if (_bright != value) { _bright = value; QueueUpdate(UpdateType.Control); } }
         }
         private bool _power;
         public bool Power
         {
-            get { return _power; }
+            get => _power;
             set { if (_power != value) { _power = value; QueueUpdate(UpdateType.Control); } }
         }
 
@@ -76,7 +76,7 @@ namespace WizLightUniversal.Core.Models
         private const int MAX_TICKS_WITHOUT_UPDATE = 5;
         private const int TICK_PERIOD_MS = 200;
 
-        private Timer UpdateTimer;
+        private readonly Timer UpdateTimer;
         public bool ShouldUpdate { get; set; }
         private int TicksWithoutUpdate;
         private volatile bool UpdatePending;
@@ -113,27 +113,29 @@ namespace WizLightUniversal.Core.Models
         // Action loop for the timer
         private void UpdateTimerCallback(object state)
         {
-            if (!ShouldUpdate) return;
-            try
+            if (!ShouldUpdate)
             {
-                if (UpdatePending) // Send an update this next call
+                try
                 {
-                    TicksWithoutUpdate = 0;
-                    Socket.SendTo(NextUpdate, Handle);
-                    Debug.WriteLine($"Model for {Handle.Ip}: Sent update");
+                    if (UpdatePending) // Send an update this next call
+                    {
+                        TicksWithoutUpdate = 0;
+                        Socket.SendTo(NextUpdate, Handle);
+                        Debug.WriteLine($"Model for {Handle.Ip}: Sent update");
+                        UpdatePending = false;
+                    }
+                    else if (++TicksWithoutUpdate > MAX_TICKS_WITHOUT_UPDATE) // Send a poll request this next call
+                    {
+                        TicksWithoutUpdate = 0;
+                        Socket.SendTo(WizState.MakeGetPilot(), Handle);
+                        Debug.WriteLine($"Model for {Handle.Ip}: Sent poll request");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine($"Model for {Handle.Ip}: Failed to issue message -- {e.Message}");
                     UpdatePending = false;
                 }
-                else if (++TicksWithoutUpdate > MAX_TICKS_WITHOUT_UPDATE) // Send a poll request this next call
-                {
-                    TicksWithoutUpdate = 0;
-                    Socket.SendTo(WizState.MakeGetPilot(), Handle);
-                    Debug.WriteLine($"Model for {Handle.Ip}: Sent poll request");
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine($"Model for {Handle.Ip}: Failed to issue message -- {e.Message}");
-                UpdatePending = false;
             }
         }
 
@@ -159,7 +161,12 @@ namespace WizLightUniversal.Core.Models
                     break;
                 case UpdateType.Control:
                     NextUpdate.Params.State = _power;
-                    if (_power) NextUpdate.Params.Dimming = _bright;
+                    if (_power)
+                    {
+                        NextUpdate.Params.Dimming = _bright;
+                    }
+                    break;
+                default:
                     break;
             }
             LastPilot = NextUpdate.Params;
@@ -192,6 +199,8 @@ namespace WizLightUniversal.Core.Models
                         case WizMethod.getUserConfig:
                         case WizMethod.getSystemConfig:
                             HandleGetConfig(state.Result);
+                            break;
+                        default:
                             break;
                     }
                     Socket.BeginRecieveFrom(Handle, WhenGetState, null);
@@ -292,7 +301,10 @@ namespace WizLightUniversal.Core.Models
         // Handle Error
         private void HandleGetError(WizError error)
         {
-            if (error != null) Debug.WriteLine($"Model for {Handle.Ip}: Got error: {error.Message}");
+            if (error != null)
+            {
+                Debug.WriteLine($"Model for {Handle.Ip}: Got error: {error.Message}");
+            }
         }
 
         // A default constructor

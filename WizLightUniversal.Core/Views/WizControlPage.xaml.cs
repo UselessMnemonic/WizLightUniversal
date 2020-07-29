@@ -24,7 +24,9 @@ namespace WizLightUniversal.Core.Views
         // and convert in between
         private class RangeToPercentConverter : IValueConverter
         {
-            private int sourceMinimum, sourceMaximum;
+            private readonly int sourceMinimum;
+            private readonly int sourceMaximum;
+
             public RangeToPercentConverter(int sourceMinimum, int sourceMaximum)
             {
                 this.sourceMaximum = sourceMaximum;

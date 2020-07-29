@@ -16,7 +16,7 @@ namespace WizLightUniversal.macOS
 		// Generate a controller
 		public static Container FreshController()
 		{
-			var storyboard = NSStoryboard.FromName("Main", null);
+            NSStoryboard storyboard = NSStoryboard.FromName("Main", null);
 
 			Container controller = (Container)
 				storyboard.InstantiateControllerWithIdentifier("Container");
@@ -67,13 +67,13 @@ namespace WizLightUniversal.macOS
 		// Called when the preferences button is clicked
 		partial void Preferences_Clicked(NSButton sender)
         {
-			((Core.Views.MainNavigationPage)Application.Current.MainPage).PushAsync(new Core.Views.PreferencesPage());
+            ((Core.Views.MainNavigationPage)Application.Current.MainPage).PushAsync(new Core.Views.PreferencesPage());
         }
 
-		// Called when the refresh button is clicked
-		partial void Refresh_Clicked(NSButton sender)
+        // Called when the refresh button is clicked
+        partial void Refresh_Clicked(NSButton sender)
         {
-			((Core.Views.MainNavigationPage)Application.Current.MainPage).HomePage.Refresh();
-		}
-	}
+            ((Core.Views.MainNavigationPage)Application.Current.MainPage).HomePage.Refresh();
+        }
+    }
 }

@@ -1,6 +1,5 @@
 ﻿using AppKit;
 using Foundation;
-using System.Drawing;
 using WizLightUniversal.Core;
 
 namespace WizLightUniversal.macOS
@@ -9,7 +8,7 @@ namespace WizLightUniversal.macOS
     public class MacPreferencesProvider : PreferencesProvider
     {
         // This is the backend to the user preferences API
-        private NSUserDefaults defaults;
+        private readonly NSUserDefaults defaults;
 
         public override int HomeID
         {
